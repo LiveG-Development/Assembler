@@ -1,5 +1,5 @@
 # LiveG Assembler
-Compiler used to assemble LiveG Assembly (*.gas) files.
+Compiler and runtime used to assemble LiveG Assembly (*.gas, *.gbn) files.
 
 This repository is licensed by the [LiveG Open-Source Licence](https://github.com/LiveG-Development/Assembler/blob/master/LICENCE.md).
 
