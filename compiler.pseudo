@@ -1,0 +1,151 @@
+/*
+ * LiveG Assembler
+ * 
+ * Copyright (C) LiveG. All Rights Reserved.
+ * Copying is not a victimless crime. Anyone caught copying LiveG software may
+ * face sanctions.
+ * 
+ * https://liveg.tech
+ * Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
+ */
+
+char* code;
+char*[] sequence = code.split("\n");
+uint[6144] assembled;
+uint position = 0;
+
+for (uint i = 0; i < sequence.length; i++) {
+    char* currentLine = sequence[i].trim();
+    char* currentLineSplit = currentLine.split(";")[0].replace("  ", "").split(" ");
+
+    if (currentLineSplit[0] == "#data") {
+        uint startingAddress = integer(currentLineSplit[1], 16);
+
+        if (currentLineSplit[2][0] == "\"") {
+            // string
+
+            char* allocation;
+            bool inString = false;
+
+            for (uint j = 0; j < currentLine.length; i++) {
+                if (currentLine[j] == "\"") {
+                    if (inString) {
+                        break;
+                    } else {
+                        inString = true;
+                    }
+                } else if inString {
+                    allocation += currentLine[j];
+                }
+            }
+
+            allocation = allocation.replace("\\n", "\n");
+
+            for (uint j = 0; j < allocation.length; j++) {
+                assembled[startingAddress + j] = ord(allocation[j]);
+            }
+        } else if (currentLineSplit[2].length == 2) {
+            // byte
+
+            assembled[startingAddress] = integer(currentLineSplit[2], 16);
+        } else if (currentLineSplit[2].length == 4) {
+            // int/uint
+
+            assembled[startingAddress] = integer(currentLineSplit[2].substring(0, 2), 16);
+            assembled[startingAddress + 1] = integer(currentLineSplit[2].substring(2, 4), 16);
+        } else {
+            throw "Invalid data structre on line " + string(i + 1) + ".";
+        }
+    } else if (currentLineSplit[0] == "#at") {
+        position = integer(currentLineSplit[1], 16);
+    } else if (currentLine != "" && currentLine[0] != ";") {
+        {char*:uint} instructions = {
+            "halt": 0x00,
+            "allocate": 0x01,
+            "copy": 0x02,
+            "jump": 0x03,
+            "write": 0x04,
+            "read": 0x05,
+            "add": 0x06,
+            "sub": 0x07,
+            "mul": 0x08,
+            "div": 0x09,
+            "mod": 0x0A,
+            "equ": 0x0B,
+            "neq": 0x0C,
+            "ltn": 0x0D,
+            "gtn": 0x0E,
+            "func": 0x0F,
+            "ret": 0x10,
+            "outbin": 0xA0,
+            "outdec": 0xA1,
+            "outhex": 0xA2,
+            "outasc": 0xA3
+        };
+
+        if (instructions[currentLineSplit[0]] != void) {
+            char* instruction = instructions[currentLineSplit[0]];
+            uint* params = [];
+
+            for (uint i = 0; i < currentLineSplit.length - 1; i++) {
+                params.append(currentLineSplit[i + 1]);
+            }
+
+            for (uint i = 0; i < params.length; i++) {
+                if (params[i].trim() != "") {
+                    if (params[i][0] == "@") {
+                        assembled[position] = 0xFF;
+                        assembled[position + 1] = i;
+
+                        if (params[i].length == 3) {
+                            assembled[position + 2] = 0;
+                            assembled[position + 3] = integer(params[i].substring(1), 16);
+                        } else {
+                            assembled[position + 2] = integer(params[i].substring(1, 3), 16);
+                            assembled[position + 3] = integer(params[i].substring(3, 5), 16);
+                        }
+                    } else if (params[i][0] == "$") {
+                        {char*:uint} registerConversions = {
+                            "PC": 0,
+                            "RM": 1,
+                            "AR": 2,
+                            "ER": 3,
+                            "FR": 4,
+                            "PM1": 5,
+                            "PM2": 6,
+                            "PM3": 7
+                        };
+
+                        assembled[position] = 0xFE;
+                        assembled[position + 1] = i;
+
+                        assembled[position + 2] = 0;
+                        assembled[position + 3] = registerConversions[params[i].substring(1)];
+                    } else {
+                        assembled[position] = 0xFD;
+                        assembled[position + 1] = i;
+                        
+                        if (params[i].length == 2) {
+                            assembled[position + 2] = 0;
+                            assembled[position + 3] = integer(params[i], 16);
+                        } else {
+                            assembled[position + 2] = integer(params[i].substring(0, 2), 16);
+                            assembled[position + 3] = integer(params[i].substring(2, 4), 16);
+                        }
+                    }
+                }
+
+                position += 4;
+            }
+
+            assembled[position] = instruction;
+            position++;
+        } else {
+            throw "Invalid instruction on line " + string(i + 1) + ".";
+        }
+    }
+}
+
+while (assembled[assembled.length - 1] == 0) {
+    assembled.pop();
+}
