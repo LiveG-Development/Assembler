@@ -41,7 +41,7 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | AR            | Arithemtic result register, result of calc.   | 2     |
 | ER            | Error register, for errors from instructions. | 3     |
 | FR            | Function register, for initiated instruction. | 4     |
-| PM (1-4)      | Parameter register, for next instruction.     | 5-7   |
+| PM (1-3)      | Parameter register, for next instruction.     | 5-7   |
 
 ## Error codes
 Error codes are collected from ER, and are set to 0 by running any arithmetic
