@@ -14,7 +14,7 @@ code = file.read()
 file.close()
 
 sequence = code.split("\n")
-assembled = [0]# 6144
+assembled = [0] * 6144
 position = 0
 
 print("")
@@ -91,6 +91,8 @@ for i in range(0, len(sequence)) :
             "gtn": 0x0E,
             "func": 0x0F,
             "ret": 0x10,
+            "dwrite": 0x14,
+            "dread": 0x15,
             "outbin": 0xA0,
             "outdec": 0xA1,
             "outhex": 0xA2,
@@ -161,7 +163,7 @@ while assembled[len(assembled) - 1] == 0:
 print("")
 
 print("Code dump:\n" + " ".join(hex(i)[2:].zfill(2) for i in assembled))
-print("Program uses " + str(len(assembled)) + "/6144 bytes, " + str((len(assembled) / 6144)# 100) + "% of memory")
+print("Program uses " + str(len(assembled)) + "/6144 bytes, " + str((len(assembled) / 6144) * 100) + "% of memory")
 
 file = open(outfile, "wb")
 file.write(bytearray(assembled))

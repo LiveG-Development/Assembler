@@ -61,8 +61,13 @@ while running:
         registers[0] = parameters[0]
     elif instruction == 0x04:
         # write
+
+        affectedValue = parameters[0]
+
+        while affectedValue >= 256:
+            affectedValue = affectedValue - 256
         
-        memory[parameters[1]] = parameters[0]
+        memory[parameters[1]] = affectedValue
     elif instruction == 0x05:
         # read
 
@@ -144,6 +149,18 @@ while running:
 
         registers[0] = registers[4]
         registers[4] = 0
+    elif instruction == 0x14:
+        # dwrite
+
+        byteA = (parameters[0] >> 8) & 0xFF
+        byteB = parameters[0] & 0xFF
+
+        memory[parameters[1]] = byteA
+        memory[parameters[1] + 1] = byteB
+    elif instruction == 0x15:
+        # dread
+
+        registers[1] = (memory[parameters[0]] * 256) + memory[parameters[0] + 1]
     elif instruction == 0xA0:
         # outbin
 
@@ -155,7 +172,7 @@ while running:
         result = 0
 
         for i in range(0, parameters[1]):
-            result += memory[parameters[0] + i]
+            result = (result * 256) + memory[parameters[0] + i]
 
         print(result, end = "", flush = True)
     elif instruction == 0xA2:

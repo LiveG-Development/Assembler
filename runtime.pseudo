@@ -9,16 +9,16 @@
  * Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
  */
 
-uint registers[8];
-uint memory[6144];
+unsigned int registers[8];
+unsigned int memory[6144];
 
 bool running = true;
 
 while (running) {
-    uint instruction = memory[registers[0]];
-    uint parameters[3] = [];
+    unsigned int instruction = memory[registers[0]];
+    unsigned int parameters[3] = [];
 
-    for (uint i = 5; i <= 7; i++) {
+    for (unsigned int i = 5; i <= 7; i++) {
         parameters.append(registers[i]);
     }
 
@@ -30,13 +30,13 @@ while (running) {
         case 0x01:
             // allocate
 
-            for (uint i = 0; i < parameters[1]; i++) {
+            for (unsigned int i = 0; i < parameters[1]; i++) {
                 memory[parameters[0] + i] = 0;
             }
         case 0x02:
             // copy
 
-            for (uint i = 0; i < parameters[1]; i++) {
+            for (unsigned int i = 0; i < parameters[1]; i++) {
                 memory[parameters[2] + i] = memory[parameters[0] + i];
             }
         case 0x03:
@@ -135,26 +135,38 @@ while (running) {
 
             registers[0] = registers[4];
             registers[4] = 0;
+        case 0x14:
+            // dwrite
+
+            unsigned char byteA = (parameters[0] >> 8) & 0xFF;
+            unsigned char byteB = parameters[0] & 0xFF;
+
+            memory[parameters[1]] = byteA;
+            memory[parameters[1] + 1] = byteB;
+        case 0x15:
+            // dread
+
+            registers[1] = (memory[parameters[0]] * 256) + memory[parameters[0] + 1];
         case 0xA0:
             // outbin
 
-            for (uint i = 0; i < parameters[1]; i++) {
+            for (unsigned int i = 0; i < parameters[1]; i++) {
                 tty.print(binary(memory[parameters[0] + i]));
             }
         case 0xA1:
             // outdec
 
-            uint result = 0;
+            unsigned int result = 0;
             
-            for (uint i = 0; i < parameters[1]; i++) {
-                result += memory[parameters[0] + i];
+            for (unsigned int i = 0; i < parameters[1]; i++) {
+                result = (result * 256) + memory[parameters[0] + i];
             }
 
             tty.print(string(result));
         case 0xA2:
             // outhex
 
-            for (uint i = 0; i < parameters[1]; i++) {
+            for (unsigned int i = 0; i < parameters[1]; i++) {
                 if (hexadecimal(memory[parameters[0] + i]).length < 1) {
                     tty.print("0" + hexadecimal(memory[parameters[0] + i]));
                 } else {
@@ -164,7 +176,7 @@ while (running) {
         case 0xA3:
             // outasc
             
-            for (uint i = 0; i < parameters[1]; i++) {
+            for (unsigned int i = 0; i < parameters[1]; i++) {
                 tty.print(ascii(memory[parameters[0] + i]));
             }
         case 0xFD:
