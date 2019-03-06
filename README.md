@@ -1,7 +1,7 @@
 # LiveG Assembler
 Compiler used to assemble LiveG Assembly (*.gas) files.
 
-This repository is licensed by the [LiveG Open-Source Licence](https://github.com/LiveG-Development/Assembly/blob/master/LICENCE.md).
+This repository is licensed by the [LiveG Open-Source Licence](https://github.com/LiveG-Development/Assembler/blob/master/LICENCE.md).
 
 ## Assembler instructions
 | Instruction   | Code  | Description                                   | Parameters                                        |
