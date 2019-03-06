@@ -91,12 +91,16 @@ for i in range(0, len(sequence)) :
             "gtn": 0x0E,
             "func": 0x0F,
             "ret": 0x10,
+            "sreg": 0x11,
+            "sgp": 0x12,
+            "cgp": 0x13,
             "dwrite": 0x14,
             "dread": 0x15,
             "outbin": 0xA0,
             "outdec": 0xA1,
             "outhex": 0xA2,
-            "outasc": 0xA3
+            "outasc": 0xA3,
+            "in": 0xA4
         }
 
         if currentLineSplit[0] in instructions:
@@ -131,7 +135,19 @@ for i in range(0, len(sequence)) :
                             "FR": 4,
                             "PM1": 5,
                             "PM2": 6,
-                            "PM3": 7
+                            "PM3": 7,
+                            "GX": 8,
+                            "GY": 9,
+                            "GW": 10,
+                            "GH": 11,
+                            "GP1": 12,
+                            "GP2": 13,
+                            "GP3": 14,
+                            "GP4": 15,
+                            "GP5": 16,
+                            "GP6": 17,
+                            "GP7": 18,
+                            "GP8": 19
                         }
 
                         assembled[position] = 0xFE

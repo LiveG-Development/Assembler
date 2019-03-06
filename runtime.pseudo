@@ -9,7 +9,7 @@
  * Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
  */
 
-unsigned int registers[8];
+unsigned int registers[20];
 unsigned int memory[6144];
 
 bool running = true;
@@ -135,6 +135,20 @@ while (running) {
 
             registers[0] = registers[4];
             registers[4] = 0;
+        case 0x11:
+            // sreg
+
+            registers[parameters[0]] = parameters[1];
+        case 0x12:
+            // sgp
+
+            registers[parameters[0] + 11] = parameters[1];
+        case 0x13:
+            // cgp
+
+            for (unsigned int i = 12; i <= 19; i++) {
+                registers[i] = 0;
+            }
         case 0x14:
             // dwrite
 
@@ -178,6 +192,29 @@ while (running) {
             
             for (unsigned int i = 0; i < parameters[1]; i++) {
                 tty.print(ascii(memory[parameters[0] + i]));
+            }
+        case 0xA4:
+            // in
+
+            unsigned int index = 0;
+            bool done = false;
+
+            while (tty.available() > 0) {
+                unsigned char lastChar;
+                
+                if (index < parameters[1] && !done) {
+                    lastChar = tty.read();
+                } else {
+                    tty.read();
+                }
+
+                if (lastChar = "\n") {
+                    done = true;
+                } else {
+                    memory[parameters[0] + index] = lastChar;
+                }
+
+                index++;
             }
         case 0xFD:
             // (setpar)

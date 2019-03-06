@@ -7,7 +7,7 @@
 # https://liveg.tech
 # Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 
-registers = [0] * 8
+registers = [0] * 20
 memory = [0] * 6144
 
 filename = input("File? ")
@@ -149,6 +149,19 @@ while running:
 
         registers[0] = registers[4]
         registers[4] = 0
+    elif instruction == 0x11:
+        # sreg
+
+        registers[parameters[0]] = parameters[1]
+    elif instruction == 0x12:
+        # sgp
+
+        registers[parameters[0] + 11] = parameters[1]
+    elif instruction == 0x13:
+        # cgp
+
+        for i in range(12, 20):
+            registers[i] = 0
     elif instruction == 0x14:
         # dwrite
 
@@ -188,6 +201,14 @@ while running:
 
         for i in range(0, parameters[1]):
             print(chr(memory[parameters[0] + i]), end = "", flush = True)
+    elif instruction == 0xA4:
+        # in
+
+        entered = input("")
+
+        for i in range(0, parameters[1]):
+            if i < len(entered):
+                memory[parameters[0] + i] = ord(entered[i])
     elif instruction == 0xFD:
         # (setpar)
         # Uses raw parameters only. Registers can't be used!

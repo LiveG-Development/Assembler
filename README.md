@@ -23,12 +23,16 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | gtn           | 0x0E  | Jump to address if values are greater than.   | firstVal (uint), secondVal (uint), addr (uint)    |
 | func          | 0x0F  | Execute function at address.                  | addr (uint)                                       |
 | ret           | 0x10  | Return from function to original address.     |                                                   |
+| sreg          | 0x11  | Set register by its index.                    | index (uint), value (uint)                        |
+| sgp           | 0x12  | Set general-purpose register by its index.    | index (uint), value (uint)                        |
+| cgp           | 0x13  | Clear all general-purpose registers.          |                                                   |
 | dwrite        | 0x14  | Writes uint to memory at address.             | value (uint), addr (uint)                         |
 | dread         | 0x15  | Reads uint memory at address to RM register.  | addr (uint)                                       |
 | outbin        | 0xA0  | Writes output of memory to TTY in binary.     | startAddr (uint), length (uint)                   |
 | outdec        | 0xA1  | Writes output of ubyte in decimal.            | startAddr (uint), length (uint)                   |
 | outhex        | 0xA2  | Writes output of ubyte in hexadecimal.        | startAddr (uint), length (uint)                   |
 | outasc        | 0xA3  | Writes output of ubyte in ASCII.              | startAddr (uint), length (uint)                   |
+| in            | 0xA4  | Gets input and stores it as ASCII in address. | startAddr (uint), length (uint)                   |
 | (setpar)      | 0xFD  | Sets parameter to value.                      | param (uint), value (any)                         |
 | (regpar)      | 0xFE  | Loads register into parameter.                | param (uint), regIndex (uint)                     |
 | (loadpar)     | 0xFF  | Loads memory address into parameter.          | param (uint), addr (uint)                         |
@@ -42,6 +46,11 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | ER            | Error register, for errors from instructions. | 3     |
 | FR            | Function register, for initiated instruction. | 4     |
 | PM (1-3)      | Parameter register, for next instruction.     | 5-7   |
+| GX            | Graphics X position register.                 | 8     |
+| GY            | Graphics Y position register.                 | 9     |
+| GW            | Graphics width register.                      | 10    |
+| GH            | Graphics height register.                     | 11    |
+| GP (1-8)      | General-purpose registers.                    | 12-19 |
 
 ## Error codes
 Error codes are collected from ER, and are set to 0 by running any arithmetic
