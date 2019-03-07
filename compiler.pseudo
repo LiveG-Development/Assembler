@@ -86,7 +86,9 @@ for (unsigned int i = 0; i < sequence.length; i++) {
             "outdec": 0xA1,
             "outhex": 0xA2,
             "outasc": 0xA3,
-            "in": 0xA4
+            "in": 0xA4,
+            "len": 0xA5,
+            "strnum": 0xA6
         };
 
         if (instructions[currentLineSplit[0]] != void) {

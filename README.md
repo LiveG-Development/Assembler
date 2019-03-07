@@ -33,6 +33,8 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | outhex        | 0xA2  | Writes output of ubyte in hexadecimal.        | startAddr (uint), length (uint)                   |
 | outasc        | 0xA3  | Writes output of ubyte in ASCII.              | startAddr (uint), length (uint)                   |
 | in            | 0xA4  | Gets input and stores it as ASCII in address. | startAddr (uint), length (uint)                   |
+| len           | 0xA5  | Gets length of memory ubyte and stores in RM. | startAddr (uint), char (ubyte)                    |
+| strnum        | 0xA6  | Gets number from string and stores in RM.     | startAddr (uint), length (uint)                   |
 | (setpar)      | 0xFD  | Sets parameter to value.                      | param (uint), value (any)                         |
 | (regpar)      | 0xFE  | Loads register into parameter.                | param (uint), regIndex (uint)                     |
 | (loadpar)     | 0xFF  | Loads memory address into parameter.          | param (uint), addr (uint)                         |
@@ -60,3 +62,4 @@ calculation that doesn't produce an error.
 |---------------|-----------------------------------------------|
 | 0             | No error.                                     |
 | 1             | Division or modulus by 0.                     |
+| 2             | String is not a number.                       |

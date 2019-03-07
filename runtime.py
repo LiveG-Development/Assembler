@@ -209,6 +209,30 @@ while running:
         for i in range(0, parameters[1]):
             if i < len(entered):
                 memory[parameters[0] + i] = ord(entered[i])
+    elif instruction == 0xA5:
+        # len
+
+        currentChar = 0
+
+        while memory[parameters[0] + currentChar] != parameters[1]:
+            currentChar += 1
+        
+        registers[1] = currentChar
+    elif instruction == 0xA6:
+        # strnum
+
+        number = 0
+        error = False
+
+        for i in range(0, parameters[1]):
+            if chr(memory[parameters[0] + i]) in "0123456789":
+                number = (number * 10) + int(chr(memory[parameters[0] + i]))
+            else:
+                error = True
+        
+        registers[1] = number
+
+        registers[3] = error * 2
     elif instruction == 0xFD:
         # (setpar)
         # Uses raw parameters only. Registers can't be used!

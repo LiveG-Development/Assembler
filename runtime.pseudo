@@ -208,7 +208,7 @@ while (running) {
                     tty.read();
                 }
 
-                if (lastChar = "\n") {
+                if (lastChar == "\n") {
                     done = true;
                 } else {
                     memory[parameters[0] + index] = lastChar;
@@ -216,6 +216,33 @@ while (running) {
 
                 index++;
             }
+        case 0xA5:
+            // len
+
+            unsigned int currentChar = 0;
+
+            while (memory[parameters[0] + currentChar] != parameters[1]) {
+                currentChar++;
+            }
+
+            registers[1] = currentChar;
+        case 0xA6:
+            // strnum
+
+            unsigned int number = 0;
+            bool error = false;
+
+            for (unsigned int i = 0; i < parameters[1]; i++) {
+                if (isDigit(ascii(memory[parameters[0] + i]))) {
+                    number = (number * 10) + ascii(memory[parameters[0] + i]).toInt();
+                } else {
+                    error = true;
+                }
+            }
+
+            registers[1] = number;
+            
+            registers[3] = error * 2;
         case 0xFD:
             // (setpar)
             // Uses raw parameters only. Registers can't be used!

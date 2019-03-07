@@ -100,7 +100,9 @@ for i in range(0, len(sequence)) :
             "outdec": 0xA1,
             "outhex": 0xA2,
             "outasc": 0xA3,
-            "in": 0xA4
+            "in": 0xA4,
+            "len": 0xA5,
+            "strnum": 0xA6
         }
 
         if currentLineSplit[0] in instructions:
