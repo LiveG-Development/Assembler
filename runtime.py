@@ -7,8 +7,12 @@
 # https://liveg.tech
 # Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 
+import os
+
 registers = [0] * 20
 memory = [0] * 6144
+
+fileDirectory = ""
 
 filename = input("File? ")
 debugging = input("Debug (y)? ") == "y"
@@ -233,6 +237,123 @@ while running:
         registers[1] = number
 
         registers[3] = error * 2
+    elif instruction == 0xB0:
+        # fopen
+
+        fileDirectory = ""
+
+        for i in range(0, parameters[1]):
+            fileDirectory += chr(memory[parameters[0] + i])
+        
+        registers[3] = 0
+    elif instruction == 0xB1:
+        # fclose
+
+        fileDirectory = ""
+    elif instruction == 0xB2:
+        # fwrite
+
+        if fileDirectory != "":
+            try:
+                os.remove(fileDirectory)
+            except:
+                pass
+
+            file = open(fileDirectory, "w")
+
+            for i in range(0, parameters[1]):
+                file.write(chr(memory[parameters[0] + i]))
+
+            file.close()
+
+            registers[3] = 3
+        else:
+            registers[3] = 0
+    elif instruction == 0xB3:
+        # fwriter
+
+        if fileDirectory != "":
+            file = open(fileDirectory, "r+")
+
+            file.seek(parameters[2])
+
+            for i in range(0, parameters[1]):
+                file.write(chr(memory[parameters[0] + i]))
+
+            file.close()
+
+            registers[3] = 3
+        else:
+            registers[3] = 0
+    elif instruction == 0xB4:
+        # fappend
+
+        if fileDirectory != "":
+            file = open(fileDirectory, "a")
+
+            for i in range(0, parameters[1]):
+                file.write(chr(memory[parameters[0] + i]))
+
+            file.close()
+
+            registers[3] = 3
+        else:
+            registers[3] = 0
+    elif instruction == 0xB5:
+        # fread
+
+        if fileDirectory != "":
+            file = open(fileDirectory, "r")
+
+            if parameters[0] + parameters[1] <= 6144:
+                for i in range(0, parameters[1]):
+                    nextChar = file.read(1)
+
+                    if nextChar:
+                        memory[parameters[0] + i] = ord(nextChar)
+                    else:
+                        registers[3] = 4
+            else:
+                registers[3] = 5
+
+            file.close()
+
+            registers[3] = 3
+        else:
+            registers[3] = 0
+    elif instruction == 0xB6:
+        # freadr
+
+        if fileDirectory != "":
+            file = open(fileDirectory, "r")
+
+            file.seek(parameters[2])
+
+            if parameters[0] + parameters[1] <= 6144:
+                for i in range(0, parameters[1]):
+                    nextChar = file.read(1)
+
+                    if nextChar:
+                        memory[parameters[0] + i] = ord(nextChar)
+                    else:
+                        parameters[3] = 4
+            else:
+                registers[3] = 5
+
+            file.close()
+
+            registers[3] = 3
+        else:
+            registers[3] = 0
+    elif instruction == 0xB7:
+        # fsize
+
+        if fileDirectory != "":
+            registers[1] = os.path.getsize(os.path.join(os.getcwd(), fileDirectory))
+
+            registers[3] = 0
+        else:
+            registers[3] = 3
     elif instruction == 0xFD:
         # (setpar)
         # Uses raw parameters only. Registers can't be used!

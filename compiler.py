@@ -102,7 +102,15 @@ for i in range(0, len(sequence)) :
             "outasc": 0xA3,
             "in": 0xA4,
             "len": 0xA5,
-            "strnum": 0xA6
+            "strnum": 0xA6,
+            "fopen": 0xB0,
+            "fclose": 0xB1,
+            "fwrite": 0xB2,
+            "fwriter": 0xB3,
+            "fappend": 0xB4,
+            "fread": 0xB5,
+            "freadr": 0xB6,
+            "fsize": 0xB7
         }
 
         if currentLineSplit[0] in instructions:

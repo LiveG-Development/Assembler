@@ -12,6 +12,9 @@
 unsigned int registers[20];
 unsigned int memory[6144];
 
+File file;
+char* fileDirectory = "";
+
 bool running = true;
 
 while (running) {
@@ -243,6 +246,140 @@ while (running) {
             registers[1] = number;
             
             registers[3] = error * 2;
+        case 0xB0:
+            // fopen
+
+            fileDirectory = "";
+
+            for (unsigned int i = 0; i < parameters[1]; i++) {
+                fileDirectory += ascii(memory[parameters[0] + i]);
+            }
+
+            registers[3] = 0;
+        case 0xB1:
+            // fclose
+
+            fileDirectory = "";
+        case 0xB2:
+            // fwrite
+
+            if (fileDirectory != "") {
+                FileManager.remove(fileDirectory);
+
+                file = FileManager.open(fileDirectory, FILE_WRITE);
+                
+                for (unsigned int i = 0; i < parameters[1]; i++) {
+                    file.write(ascii(memory[parameters[0] + i]));
+                }
+                
+                file.close();
+                
+                registers[3] = 0;
+            } else {
+                registers[3] = 3;
+            }
+        case 0xB3:
+            // fwriter
+
+            if (fileDirectory != "") {
+                file = FileManager.open(fileDirectory, FILE_WRITE);
+
+                file.seek(parameters[2]);
+                
+                for (unsigned int i = 0; i < parameters[1]; i++) {
+                    file.write(ascii(memory[parameters[0] + i]));
+                }
+
+                file.close();
+                
+                registers[3] = 0;
+            } else {
+                registers[3] = 3;
+            }
+        case 0xB4:
+            // fappend
+
+            if (fileDirectory != "") {
+                file = FileManager.open(fileDirectory, FILE_WRITE);
+                
+                for (unsigned int i = 0; i < parameters[1]; i++) {
+                    file.write(ascii(memory[parameters[0] + i]));
+                }
+
+                file.close();
+                                
+                registers[3] = 0;
+            } else {
+                registers[3] = 3;
+            }
+        case 0xB5:
+            // fread
+
+            if (fileDirectory != "") {
+                file = FileManager.open(fileDirectory, FILE_READ);
+
+                if (parameters[0] + parameters[1] <= 6144) {
+                    for (unsigned int i = 0; i < parameters[1]; i++) {
+                        char nextChar = file.read();
+
+                        if (nextChar >= 0) {
+                            memory[parameters[0] + i] = nextChar;
+                        } else {
+                            registers[3] = 4;
+                        }
+                    }
+
+                    file.close();
+                    
+                    registers[3] = 0;
+                } else {
+                    registers[3] = 5;
+                }
+            } else {
+                registers[3] = 3;
+            }
+        case 0xB6:
+            // freadr
+
+            if (fileDirectory != "") {
+                file = FileManager.open(fileDirectory, FILE_READ);
+
+                file.seek(parameters[2]);
+
+                if (parameters[0] + parameters[1] <= 6144) {
+                    for (unsigned int i = 0; i < parameters[1]; i++) {
+                        char nextChar = file.read();
+
+                        if (nextChar >= 0) {
+                            memory[parameters[0] + i] = nextChar;
+                        } else {
+                            registers[3] = 4;
+                        }
+                    }
+
+                    file.close();
+                    
+                    registers[3] = 0;
+                } else {
+                    registers[3] = 5;
+                }
+            } else {
+                registers[3] = 3;
+            }
+        case 0xB7:
+            // fsize
+
+            if (fileDirectory != "") {
+                file = FileManager.open(fileDirectory);
+                
+                registers[1] = file.size();
+
+                file.close();
+                                
+                registers[3] = 0;
+            } else {
+                registers[3] = 3;
+            }
         case 0xFD:
             // (setpar)
             // Uses raw parameters only. Registers can't be used!
