@@ -429,7 +429,7 @@ while (running) {
         case 0xC9:
             // gbin
 
-            for (unsigned int i = 0; i < parameters[1]; i++) {
+            for (unsigned int i = 0; i < parameters[2]; i++) {
                 for (unsigned int j = 0; j < binary(memory[parameters[2] + i]).length; j++) {
                     registers[3] = integer(drawtools.gchar(binary(memory[parameters[1] + i])[j], registers[8] + (j * registers[11] * 4), registers[9], registers[11], parameters[0])) * 6;
                 }
