@@ -399,11 +399,17 @@ while running:
     elif instruction == 0xC7:
         # grect
 
-        registers[3] = 6 - int(drawtools.grect(registers[8], registers[9], registers[10], registers[11], parameters[0], parameters[1])) * 6
+        if parameters[1] > 0:
+            registers[3] = 6 - int(drawtools.grect(registers[8], registers[9], registers[10], registers[11], parameters[0], 0)) * 6
+        else:
+            registers[3] = 6 - int(drawtools.grect(registers[8], registers[9], registers[10], registers[11], parameters[0], 1)) * 6
     elif instruction == 0xC8:
         # gcircle
 
-        registers[3] = 6 - int(drawtools.gcircle(registers[8], registers[9], registers[10], parameters[0], parameters[1])) * 6
+        if parameters[1] > 0:
+            registers[3] = 6 - int(drawtools.gcircle(registers[8], registers[9], registers[10], parameters[0], 0)) * 6
+        else:
+            registers[3] = 6 - int(drawtools.gcircle(registers[8], registers[9], registers[10], parameters[0], 1)) * 6
     elif instruction == 0xC9:
         # gbin
 

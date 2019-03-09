@@ -50,8 +50,8 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | gpixel        | 0xC4  | Draws pixel.                                  | colour (uint)                                     |
 | gline         | 0xC5  | Draws line.                                   | colour (uint)                                     |
 | gfline        | 0xC6  | Draws fast line.                              | colour (uint), isVertical (bool)                  |
-| grect         | 0xC7  | Draws rectangle.                              | colour (uint), borderSize (uint)                  |
-| gcircle       | 0xC8  | Draws circle.                                 | colour (uint), borderSize (uint)                  |
+| grect         | 0xC7  | Draws rectangle.                              | colour (uint), isFilled (bool)                    |
+| gcircle       | 0xC8  | Draws circle.                                 | colour (uint), isFilled (bool)                    |
 | gbin          | 0xC9  | Draws output of ubyte in binary.              | colour (uint), startAddr (uint), length (uint)    |
 | gdec          | 0xCA  | Draws output of ubyte in decimal.             | colour (uint), startAddr (uint), length (uint)    |
 | ghex          | 0xCB  | Draws output of ubyte in hexadecimal.         | colour (uint), startAddr (uint), length (uint)    |
