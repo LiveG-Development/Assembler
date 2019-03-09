@@ -176,7 +176,7 @@ def grect(x, y, w, h, colour, borderSize):
     else:
         return False
 
-def gcircle(x, y, w, h, colour, borderSize):
+def gcircle(x, y, w, colour, borderSize):
     if display != None:
         pygame.draw.circle(display, hexrgb(colour), (x, y), w, borderSize)
 
@@ -195,8 +195,6 @@ def gchar(char, x, y, h, colour):
             glyph = font[char - 0x20][i]
 
             for j in range(0, 8):
-                print((glyph >> j) & 0x01)
-
                 if (glyph >> j) & 0x01:
                     grect((x + i) * h, (y + j) * h, h, h, colour, 0)
         
@@ -204,8 +202,19 @@ def gchar(char, x, y, h, colour):
     else:
         return False
 
+def gbmp(x, y, dir):
+    if display != None:
+        image = pygame.image.load(dir)
+
+        display.blit(image, (0, 0))
+        pygame.display.update()
+
+        return True
+    else:
+        return False
+
 def gtouch(wait):
-    position = ()
+    position = []
     down = False
 
     if display != None:
@@ -222,14 +231,13 @@ def gtouch(wait):
 
                         touched = True
         else:
+            pygame.event.get()
+            
             position = pygame.mouse.get_pos()
 
-            events = pygame.event.get()
+            if pygame.mouse.get_pressed() != (False, False, False):
+                down = True
 
-            for event in events:
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    down = True
-
-        return True
+        return (position, down)
     else:
         return False

@@ -208,10 +208,10 @@ while running:
         # outhex
 
         for i in range(0, parameters[1]):
-            if len(hex(memory[parameters[0] + i])[2:]) < 1:
-                print(hex(memory[parameters[0] + i])[2:], end = "", flush = True)
+            if len(hex(memory[parameters[0] + i])[2:]) < 2:
+                print("0" + hex(memory[parameters[0] + i])[2:], end = "", flush = True) 
             else:
-                print("0" + hex(memory[parameters[0] + i])[2:], end = "", flush = True)
+                print(hex(memory[parameters[0] + i])[2:], end = "", flush = True)
     elif instruction == 0xA3:
         # outasc
 
@@ -366,6 +366,97 @@ while running:
             registers[3] = 0
         else:
             registers[3] = 3
+    elif instruction == 0xC0:
+        # gpos
+
+        registers[8] = parameters[0]
+        registers[9] = parameters[1]
+    elif instruction == 0xC1:
+        # gsize
+
+        registers[10] = parameters[0]
+        registers[11] = parameters[1]
+    elif instruction == 0xC2:
+        # ginit
+
+        drawtools.ginit(registers[10], registers[11])
+    elif instruction == 0xC3:
+        # gfill
+
+        registers[3] = 6 - int(drawtools.gfill(parameters[0])) * 6
+    elif instruction == 0xC4:
+        # gpixel
+
+        registers[3] = 6 - int(drawtools.gpixel(registers[8], registers[9], parameters[0])) * 6
+    elif instruction == 0xC5:
+        # gline
+
+        registers[3] = 6 - int(drawtools.gline(registers[8], registers[9], registers[10], registers[11], parameters[0])) * 6
+    elif instruction == 0xC6:
+        # gfline
+
+        registers[3] = 6 - int(drawtools.gfline(registers[8], registers[9], registers[10], registers[11], parameters[0])) * 6
+    elif instruction == 0xC7:
+        # grect
+
+        registers[3] = 6 - int(drawtools.grect(registers[8], registers[9], registers[10], registers[11], parameters[0], parameters[1])) * 6
+    elif instruction == 0xC8:
+        # gcircle
+
+        registers[3] = 6 - int(drawtools.gcircle(registers[8], registers[9], registers[10], parameters[0], parameters[1])) * 6
+    elif instruction == 0xC9:
+        # gbin
+
+        for i in range(0, parameters[2]):
+            for j in range(0, len("{0:b}".format(memory[parameters[1] + i]))):
+                registers[3] = 6 - int(drawtools.gchar("{0:b}".format(memory[parameters[1] + i])[j], registers[8] + (j * registers[11] * 4), registers[9], registers[11], parameters[2])) * 6
+    elif instruction == 0xCA:
+        # gdec
+
+        result = 0
+
+        for i in range(0, parameters[2]):
+            result = (result * 256) + memory[parameters[1] + i]
+
+        for i in range(0, len(str(result))):
+            registers[3] = 6 - int(drawtools.gchar(str(result)[i], registers[8] + (i * registers[11] * 4), registers[9], registers[11], parameters[2])) * 6
+    elif instruction == 0xCB:
+        # ghex
+
+        for i in range(0, parameters[2]):
+            if len(hex(memory[parameters[0] + i])[2:]) < 2:
+                registers[3] = 6 - int(drawtools.gchar("0", registers[8], registers[9], registers[11], parameters[2])) * 6
+                registers[3] = 6 - int(drawtools.gchar(hex(memory[parameters[1] + i])[2:], registers[8] + (registers[11] * 4), registers[9], registers[11], parameters[2])) * 6
+            else:
+                registers[3] = 6 - int(drawtools.gchar(hex(memory[parameters[1] + i])[2:][0], registers[8], registers[9], registers[11], parameters[2])) * 6
+                registers[3] = 6 - int(drawtools.gchar(hex(memory[parameters[1] + i])[2:][1], registers[8] + (registers[11] * 4), registers[9], registers[11], parameters[2])) * 6
+    elif instruction == 0xCC:
+        # gasc
+
+        for i in range(0, parameters[2]):
+            registers[3] = 6 - int(drawtools.gchar(memory[parameters[1] + i], registers[8] + (i * registers[11] * 4), registers[9], registers[11], parameters[0])) * 6
+    elif instruction == 0xCD:
+        # gbmp
+
+        fileDirectory = ""
+
+        for i in range(0, parameters[1]):
+            fileDirectory += chr(memory[parameters[0] + i])
+        
+        registers[3] = 6 - int(drawtools.gbmp(registers[8], registers[9], fileDirectory)) * 6
+    elif instruction == 0xCE:
+        # gtouch
+
+        values = drawtools.gtouch(parameters[0] > 0)
+
+        if values == False:
+            registers[3] = 6
+        else:
+            registers[8] = values[0][0]
+            registers[9] = values[0][1]
+            registers[1] = values[1]
+
+            registers[3] = 0
     elif instruction == 0xFD:
         # (setpar)
         # Uses raw parameters only. Registers can't be used!

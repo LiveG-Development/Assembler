@@ -89,3 +89,4 @@ calculation that doesn't produce an error.
 | 3             | File is not open.                             |
 | 4             | File cannot be further read.                  |
 | 5             | File cannot fit in memory.                    |
+| 6             | Cannot draw on non-existent display.          |

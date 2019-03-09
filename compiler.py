@@ -110,7 +110,22 @@ for i in range(0, len(sequence)) :
             "fappend": 0xB4,
             "fread": 0xB5,
             "freadr": 0xB6,
-            "fsize": 0xB7
+            "fsize": 0xB7,
+            "gpos": 0xC0,
+            "gsize": 0xC1,
+            "ginit": 0xC2,
+            "gfill": 0xC3,
+            "gpixel": 0xC4,
+            "gline": 0xC5,
+            "gfline": 0xC6,
+            "grect": 0xC7,
+            "gcircle": 0xC8,
+            "gbin": 0xC9,
+            "gdec": 0xCA,
+            "ghex": 0xCB,
+            "gasc": 0xCC,
+            "gbmp": 0xCD,
+            "gtouch": 0xCE
         }
 
         if currentLineSplit[0] in instructions:
