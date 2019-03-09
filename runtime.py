@@ -8,6 +8,18 @@
 # Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 
 import os
+import contextlib
+
+try:
+    with contextlib.redirect_stdout(None):
+        import pygame
+except ImportError:
+    raise ImportError("please install PyGame to use LiveG Assembler")
+
+try:
+    import drawtools
+except ImportError:
+    raise ImportError("drawtools.py is missing, it is needed for graphics")
 
 registers = [0] * 20
 memory = [0] * 6144

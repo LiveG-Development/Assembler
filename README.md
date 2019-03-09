@@ -28,7 +28,7 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | cgp           | 0x13  | Clears all general-purpose registers.         |                                                   |
 | dwrite        | 0x14  | Writes uint to memory at address.             | value (uint), addr (uint)                         |
 | dread         | 0x15  | Reads uint memory at address to RM register.  | addr (uint)                                       |
-| outbin        | 0xA0  | Writes output of memory to TTY in binary.     | startAddr (uint), length (uint)                   |
+| outbin        | 0xA0  | Writes output of ubyte to TTY in binary.      | startAddr (uint), length (uint)                   |
 | outdec        | 0xA1  | Writes output of ubyte in decimal.            | startAddr (uint), length (uint)                   |
 | outhex        | 0xA2  | Writes output of ubyte in hexadecimal.        | startAddr (uint), length (uint)                   |
 | outasc        | 0xA3  | Writes output of ubyte in ASCII.              | startAddr (uint), length (uint)                   |
@@ -43,6 +43,21 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | fread         | 0xB5  | Reads file into memory at position.           | startAddr (uint), length (uint)                   |
 | freadr        | 0xB6  | Reads file into memory in range.              | startAddr (uint), length (uint), fileAddr (uint)  |
 | fsize         | 0xB7  | Gets size of file and stores in RM.           |                                                   |
+| gpos          | 0xC0  | Sets GX and GY registers to values.           | xValue (uint), yValue (uint)                      |
+| gsize         | 0xC1  | Sets GW and GH registers to values.           | wValue (uint), hValue (uint)                      |
+| ginit         | 0xC2  | Sets drawing area.                            |                                                   |
+| gfill         | 0xC3  | Fills screen with colour.                     | colour (uint)                                     |
+| gpixel        | 0xC4  | Draws pixel.                                  | colour (uint)                                     |
+| gline         | 0xC5  | Draws line.                                   | colour (uint)                                     |
+| gfline        | 0xC6  | Draws fast line.                              | colour (uint), isVertical (bool)                  |
+| grect         | 0xC7  | Draws rectangle.                              | colour (uint), borderSize (uint)                  |
+| gcircle       | 0xC8  | Draws circle.                                 | colour (uint), borderSize (uint)                  |
+| gbin          | 0xC9  | Draws output of ubyte in binary.              | colour (uint), startAddr (uint), length (uint)    |
+| gdec          | 0xCA  | Draws output of ubyte in decimal.             | colour (uint), startAddr (uint), length (uint)    |
+| ghex          | 0xCB  | Draws output of ubyte in hexadecimal.         | colour (uint), startAddr (uint), length (uint)    |
+| gasc          | 0xCC  | Draws output of ubyte in ASCII.               | colour (uint), startAddr (uint), length (uint)    |
+| gbmp          | 0xCD  | Draws bitmap by string.                       | startAddr (uint), length (uint)                   |
+| gtouch        | 0xCE  | Gets touch and stores in GX, GY and RM.       | waitForPress (bool)                               |
 | (setpar)      | 0xFD  | Sets parameter to value.                      | param (uint), value (any)                         |
 | (regpar)      | 0xFE  | Loads register into parameter.                | param (uint), regIndex (uint)                     |
 | (loadpar)     | 0xFF  | Loads memory address into parameter.          | param (uint), addr (uint)                         |
