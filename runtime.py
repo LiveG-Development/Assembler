@@ -395,7 +395,7 @@ while running:
     elif instruction == 0xC6:
         # gfline
 
-        registers[3] = 6 - int(drawtools.gfline(registers[8], registers[9], registers[10], registers[11], parameters[0])) * 6
+        registers[3] = 6 - int(drawtools.gfline(registers[8], registers[9], registers[10], registers[11], parameters[1], parameters[0])) * 6
     elif instruction == 0xC7:
         # grect
 
