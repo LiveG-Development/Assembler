@@ -415,7 +415,7 @@ while running:
 
         for i in range(0, parameters[2]):
             for j in range(0, len("{0:b}".format(memory[parameters[1] + i]))):
-                registers[3] = 6 - int(drawtools.gchar("{0:b}".format(memory[parameters[1] + i])[j], registers[8] + (j * registers[11] * 4), registers[9], registers[11], parameters[2])) * 6
+                registers[3] = 6 - int(drawtools.gchar("{0:b}".format(memory[parameters[1] + i])[j], registers[8] + registers[8] + (j * registers[11] * 6), registers[9], registers[11], parameters[2])) * 6
     elif instruction == 0xCA:
         # gdec
 
@@ -425,7 +425,7 @@ while running:
             result = (result * 256) + memory[parameters[1] + i]
 
         for i in range(0, len(str(result))):
-            registers[3] = 6 - int(drawtools.gchar(str(result)[i], registers[8] + (i * registers[11] * 4), registers[9], registers[11], parameters[2])) * 6
+            registers[3] = 6 - int(drawtools.gchar(str(result)[i], registers[8] + (i * registers[11] * 6), registers[9], registers[11], parameters[2])) * 6
     elif instruction == 0xCB:
         # ghex
 
@@ -437,10 +437,10 @@ while running:
                 registers[3] = 6 - int(drawtools.gchar(hex(memory[parameters[1] + i])[2:][0], registers[8], registers[9], registers[11], parameters[2])) * 6
                 registers[3] = 6 - int(drawtools.gchar(hex(memory[parameters[1] + i])[2:][1], registers[8] + (registers[11] * 4), registers[9], registers[11], parameters[2])) * 6
     elif instruction == 0xCC:
-        # gasc
+        # gas
 
         for i in range(0, parameters[2]):
-            registers[3] = 6 - int(drawtools.gchar(memory[parameters[1] + i], registers[8] + (i * registers[11] * 4), registers[9], registers[11], parameters[0])) * 6
+            registers[3] = 6 - int(drawtools.gchar(memory[parameters[1] + i], registers[8] + (i * registers[11] * 6), registers[9], registers[11], parameters[0])) * 6
     elif instruction == 0xCD:
         # gbmp
 

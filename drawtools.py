@@ -196,7 +196,7 @@ def gchar(char, x, y, h, colour):
 
             for j in range(0, 8):
                 if (glyph >> j) & 0x01:
-                    grect((x + i) * h, (y + j) * h, h, h, colour, 0)
+                    grect(x + (i * h), y + (j * h), h, h, colour, 0)
         
         return True
     else:
