@@ -127,7 +127,17 @@ for i in range(0, len(sequence)) :
             "ghex": 0xCB,
             "gasc": 0xCC,
             "gbmp": 0xCD,
-            "gtouch": 0xCE
+            "gtouch": 0xCE,
+            "sleep": 0xD0,
+            "gyear": 0xD1,
+            "gmonth": 0xD2,
+            "gdate": 0xD3,
+            "gday": 0xD4,
+            "ghour": 0xD5,
+            "gmin": 0xD6,
+            "gsec": 0xD7,
+            "sdate": 0xD8,
+            "stime": 0xD9
         }
 
         if currentLineSplit[0] in instructions:

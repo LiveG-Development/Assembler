@@ -9,6 +9,8 @@
 
 import os
 import contextlib
+import time
+import datetime
 
 try:
     with contextlib.redirect_stdout(None):
@@ -475,6 +477,48 @@ while running:
             registers[1] = values[1]
 
             registers[3] = 0
+    elif instruction == 0xD0:
+        # sleep
+
+        time.sleep(parameters[0] / 1000)
+    elif instruction == 0xD1:
+        # gyear
+
+        registers[1] = datetime.datetime.now().year
+    elif instruction == 0xD2:
+        # gmonth
+
+        registers[1] = datetime.datetime.now().month
+    elif instruction == 0xD3:
+        # gdate
+
+        registers[1] = datetime.datetime.now().day
+    elif instruction == 0xD4:
+        # gday
+
+        registers[1] = datetime.datetime.now().weekday()
+    elif instruction == 0xD5:
+        # ghour
+
+        registers[1] = datetime.datetime.now().hour
+    elif instruction == 0xD6:
+        # gminute
+
+        registers[1] = datetime.datetime.now().minute
+    elif instruction == 0xD7:
+        # gsecond
+
+        registers[1] = datetime.datetime.now().second
+    elif instruction == 0xD8:
+        # sdate
+        # Skipping, system time shouldn't be easily set by programs
+
+        pass
+    elif instruction == 0xD9:
+        # stime
+        # Skipping, system time shouldn't be easily set by programs
+
+        pass
     elif instruction == 0xFD:
         # (setpar)
         # Uses raw parameters only. Registers can't be used!

@@ -59,6 +59,16 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | gasc          | 0xCC  | Draws output of ubyte in ASCII.               | colour (uint), startAddr (uint), length (uint)    |
 | gbmp          | 0xCD  | Draws bitmap by string.                       | startAddr (uint), length (uint)                   |
 | gtouch        | 0xCE  | Gets touch and stores in GX, GY and RM.       | waitForPress (bool)                               |
+| pause         | 0xD0  | Pause for a specified period of milliseconds. | milliseconds (uint)                               |
+| gyear         | 0xD1  | Gets the current year and stores in RM.       |                                                   |
+| gmonth        | 0xD2  | Gets the current month and stores in RM.      |                                                   |
+| gdate         | 0xD3  | Gets the current month date and stores in RM. |                                                   |
+| gday          | 0xD4  | Gets the current weekday and stores in RM.    |                                                   |
+| ghour         | 0xD5  | Gets the current hour and stores in RM.       |                                                   |
+| gmin          | 0xD6  | Gets the current minute and stores in RM.     |                                                   |
+| gsec          | 0xD7  | Gets the current second and stores in RM.     |                                                   |
+| sdate         | 0xD8  | Sets the current date.                        | date (uint), month (uint), year (uint)            |
+| stime         | 0xD9  | Sets the current time.                        | hour (uint), min (uint), sec (uint)               |
 | (setpar)      | 0xFD  | Sets parameter to value.                      | param (uint), value (any)                         |
 | (regpar)      | 0xFE  | Loads register into parameter.                | param (uint), regIndex (uint)                     |
 | (loadpar)     | 0xFF  | Loads memory address into parameter.          | param (uint), addr (uint)                         |

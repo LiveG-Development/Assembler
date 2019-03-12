@@ -502,6 +502,46 @@ while (running) {
 
                 registers[3] = 0;
             }
+        case 0xD0:
+            // sleep
+
+            time.sleep(parameters[1] / 1000);
+        case 0xD1:
+            // gyear
+
+            registers[1] = time.now().year;
+        case 0xD2:
+            // gmonth
+
+            registers[1] = time.now().month;
+        case 0xD3:
+            // gdate
+
+            registers[1] = time.now().day;
+        case 0xD4:
+            // gday
+
+            registers[1] = time.now().weekday;
+        case 0xD5:
+            // ghour
+
+            registers[1] = time.now().hour;
+        case 0xD6:
+            // gmin
+
+            registers[1] = time.now().minute;
+        case 0xD7:
+            // gsec
+
+            registers[1] = time.now().second;
+        case 0xD8:
+            // sdate
+
+            time.setDate(parameters[0], parameters[1], parameters[2]);
+        case 0xD9:
+            // stime
+
+            time.setTime(parameters[0], parameters[1], parameters[2]);
         case 0xFD:
             // (setpar)
             // Uses raw parameters only. Registers can't be used!
