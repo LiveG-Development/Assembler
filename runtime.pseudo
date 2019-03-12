@@ -246,6 +246,20 @@ while (running) {
             registers[1] = number;
             
             registers[3] = error * 2;
+        case 0xA7:
+            // numstr
+
+            char* number = string(parameters[2]);
+            unsigned int padCount = 0;
+
+            for (unsigned int i = 0; i < parameters[1]; i++) {
+                if (parameters[1] - i > number.length) {
+                    memory[parameters[0] + i] = 0;
+                    padCount++;
+                } else {
+                    memory[parameters[0] + i] = number[i - padCount];
+                }
+            }
         case 0xB0:
             // fopen
 

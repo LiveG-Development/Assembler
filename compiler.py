@@ -103,6 +103,8 @@ for i in range(0, len(sequence)) :
             "in": 0xA4,
             "len": 0xA5,
             "strnum": 0xA6,
+            "numstr": 0xA7,
+            "dnumstr": 0xA8,
             "fopen": 0xB0,
             "fclose": 0xB1,
             "fwrite": 0xB2,

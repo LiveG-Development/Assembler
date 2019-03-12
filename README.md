@@ -35,6 +35,7 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | in            | 0xA4  | Gets input and stores it as ASCII in address. | startAddr (uint), length (uint)                   |
 | len           | 0xA5  | Gets length of memory ubyte and stores in RM. | startAddr (uint), char (ubyte)                    |
 | strnum        | 0xA6  | Gets number from string and stores in RM.     | startAddr (uint), length (uint)                   |
+| numstr        | 0xA7  | Store number in memory as string.             | startAddr (uint), length (uint), value (uint)     |
 | fopen         | 0xB0  | Opens file at directory string.               | startAddr (uint), length (uint)                   |
 | fclose        | 0xB1  | Closes currently open file.                   |                                                   |
 | fwrite        | 0xB2  | Writes memory into file at position.          | startAddr (uint), length (uint)                   |

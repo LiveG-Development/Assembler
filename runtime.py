@@ -249,6 +249,18 @@ while running:
         registers[1] = number
 
         registers[3] = error * 2
+    elif instruction == 0xA7:
+        # numstr
+
+        number = str(parameters[2])
+        padCount = 0
+
+        for i in range(0, parameters[1]):
+            if parameters[1] - i > len(number):
+                memory[parameters[0] + i] = 0
+                padCount += 1
+            else:
+                memory[parameters[0] + i] = ord(number[i - padCount])
     elif instruction == 0xB0:
         # fopen
 
