@@ -7,7 +7,9 @@
 # https://liveg.tech
 # Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 
+from pathlib import Path
 import os
+import shutil
 import contextlib
 import time
 import datetime
@@ -31,6 +33,8 @@ fileDirectory = ""
 filename = input("File? ")
 debugging = input("Debug (y)? ") == "y"
 file = open(filename, "rb")
+directoryPath = "/"
+directoryPosition = 0
 position = 0
 
 while True:
@@ -285,10 +289,10 @@ while running:
             except:
                 pass
 
-            file = open(fileDirectory, "w")
+            file = open(fileDirectory, "wb")
 
             for i in range(0, parameters[1]):
-                file.write(chr(memory[parameters[0] + i]))
+                file.write(bytes([memory[parameters[0] + i]]))
 
             file.close()
 
@@ -299,12 +303,12 @@ while running:
         # fwriter
 
         if fileDirectory != "":
-            file = open(fileDirectory, "r+")
+            file = open(fileDirectory, "rb+")
 
             file.seek(parameters[2])
 
             for i in range(0, parameters[1]):
-                file.write(chr(memory[parameters[0] + i]))
+                file.write(bytes([memory[parameters[0] + i]]))
 
             file.close()
 
@@ -315,10 +319,10 @@ while running:
         # fappend
 
         if fileDirectory != "":
-            file = open(fileDirectory, "a")
+            file = open(fileDirectory, "ab")
 
             for i in range(0, parameters[1]):
-                file.write(chr(memory[parameters[0] + i]))
+                file.write(bytes([memory[parameters[0] + i]]))
 
             file.close()
 
@@ -329,7 +333,7 @@ while running:
         # fread
 
         if fileDirectory != "":
-            file = open(fileDirectory, "r")
+            file = open(fileDirectory, "rb")
 
             if parameters[0] + parameters[1] <= 6144:
                 for i in range(0, parameters[1]):
@@ -351,7 +355,7 @@ while running:
         # freadr
 
         if fileDirectory != "":
-            file = open(fileDirectory, "r")
+            file = open(fileDirectory, "rb")
 
             file.seek(parameters[2])
 
@@ -376,10 +380,90 @@ while running:
 
         if fileDirectory != "":
             registers[1] = os.path.getsize(os.path.join(os.getcwd(), fileDirectory))
-
             registers[3] = 0
         else:
             registers[3] = 3
+    elif instruction == 0xB8:
+        # fdel
+
+        if fileDirectory != "":
+            try:
+                os.remove(os.path.join(os.getcwd(), fileDirectory))
+            except:
+                pass
+            
+            registers[3] = 0
+        else:
+            registers[3] = 3
+    elif instruction == 0xB9:
+        # fmd
+
+        directoryName = ""
+
+        for i in range(0, parameters[1]):
+            directoryName += chr(memory[parameters[0] + i])
+
+        try:
+            if not os.path.exists(os.path.join(os.getcwd(), directoryName)):
+                os.makedirs(os.path.join(os.getcwd(), directoryName))
+        except:
+            pass
+    elif instruction == 0xBA:
+        # frd
+
+        directoryName = ""
+
+        for i in range(0, parameters[1]):
+            directoryName += chr(memory[parameters[0] + i])
+
+        try:
+            shutil.rmtree(os.path.join(os.getcwd(), directoryName))
+        except:
+            pass
+    elif instruction == 0xBB:
+        # fstart
+
+        directoryName = ""
+
+        for i in range(0, parameters[1]):
+            directoryName += chr(memory[parameters[0] + i])
+
+        directoryPath = directoryName
+        directoryPosition = 0
+    elif instruction == 0xBC:
+        # fnext
+
+        directoryListing = os.listdir(os.path.join(os.getcwd(), directoryPath))
+
+        for i in range(0, 12):
+            memory[parameters[0] + i] = 0
+        
+        if directoryPosition < len(directoryListing):
+            filename = directoryListing[directoryPosition]
+
+            for i in range(0, min(len(filename), 12)):
+                memory[parameters[0] + i] = ord(filename[i].upper())
+
+        directoryPosition += 1
+    elif instruction == 0xBD:
+        # fex
+
+        if fileDirectory != "":
+            registers[1] = Path(os.path.join(os.getcwd(), fileDirectory)).exists()
+            registers[3] = 0
+        else:
+            registers[3] = 3
+    elif instruction == 0xBE:
+        # fdir
+
+        directoryListing = os.listdir(os.path.join(os.getcwd(), directoryPath))
+        
+        if directoryPosition < len(directoryListing):
+            registers[1] = os.path.isdir(os.path.join(os.getcwd(), directoryPath, directoryListing[directoryPosition]))
+        else:
+            registers[1] = 0
+
+        directoryPosition += 1
     elif instruction == 0xC0:
         # gpos
 
@@ -534,7 +618,7 @@ while running:
         # Uses raw parameters only. Registers can't be used!
         registers[memory[registers[0] + 1] + 5] = memory[(memory[registers[0] + 2] * 256) + memory[registers[0] + 3]]
     
-    if instruction != 0x03 and instruction != 0x0B and instruction != 0x0C and instruction != 0x0D and instruction != 0x0E and instruction != 0x0F and instruction != 0x10:
+    if instruction != 0x03 and instruction != 0x0B and instruction != 0x0C and instruction != 0x0D and instruction != 0x0E and instruction != 0x0F:
         # Only increase PC if jump instruction isn't used
 
         if instruction == 0xFD or instruction == 0xFE or instruction == 0xFF:

@@ -13,9 +13,12 @@ unsigned int registers[20];
 unsigned int memory[6144];
 
 File file;
+File directory;
 char* fileDirectory = "";
 
 bool running = true;
+
+directory = FileManager.open("/");
 
 while (running) {
     unsigned int instruction = memory[registers[0]];
@@ -394,6 +397,87 @@ while (running) {
             } else {
                 registers[3] = 3;
             }
+        case 0xB8:
+            // fdel
+
+            if (fileDirectory != "") {
+                FileManager.remove(fileDirectory);
+
+                fileDirectory = "";
+
+                registers[3] = 0;
+            } else {
+                registers[3] = 3;
+            }
+        case 0xB9:
+            // fmd
+
+            char* directoryName = "";
+
+            for (unsigned int i = 0; i < parameters[1]; i++) {
+                directoryName += ascii(memory[parameters[0] + i]);
+            }
+
+            FileManager.mkdir(directoryName);
+        case 0xBA:
+            // frd
+
+            char* directoryName = "";
+
+            for (unsigned int i = 0; i < parameters[1]; i++) {
+                directoryName += ascii(memory[parameters[0] + i]);
+            }
+
+            FileManager.rmdir(directoryName);
+        case 0xBB:
+            // fstart
+
+            char* directoryName = "";
+
+            for (unsigned int i = 0; i < parameters[1]; i++) {
+                directoryName += ascii(memory[parameters[0] + i]);
+            }
+
+            directory.close();
+
+            directory = FileManager.open(directoryName);
+        case 0xBC:
+            // fnext
+
+            file = directory.openNextFile();
+
+            for (unsigned int i = 0; i < 12; i++) {
+                memory[parameters[0] + i] = 0;
+            }
+
+            if (file) {
+                char* filename = file.name();
+
+                for (unsigned int i = 0; i < filename.length; i++) {
+                    memory[parameters[0] + i] = filename[i];
+                }
+
+                file.close();
+            }
+        case 0xBD:
+            // fex
+
+            if (fileDirectory != "") {
+                registers[1] = FileManager.exists(fileDirectory);
+                registers[3] = 0;
+            } else {
+                registers[3] = 3;
+            }
+        case 0xBE:
+            // fdir
+
+            file = directory.openNextFile();
+
+            if (file) {
+                registers[1] = file.isDirectory();
+            } else {
+                registers[1] = 0;
+            }
         case 0xC0:
             // gpos
 
@@ -559,7 +643,7 @@ while (running) {
             registers[memory[registers[0] + 1] + 5] = memory[(memory[registers[0] + 2] * 256) + memory[registers[0] + 3]];
     }
 
-    if (instruction != 0x03 && instruction != 0x0B && instruction != 0x0C && instruction != 0x0D && instruction != 0x0E && instruction != 0x0F && instruction != 0x10) {
+    if (instruction != 0x03 && instruction != 0x0B && instruction != 0x0C && instruction != 0x0D && instruction != 0x0E && instruction != 0x0F) {
         // Only increase PC if jump instruction isn't used
 
         if (instruction == 0xFD || instruction == 0xFE || instruction == 0xFF) {

@@ -35,7 +35,7 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | in            | 0xA4  | Gets input and stores it as ASCII in address. | startAddr (uint), length (uint)                   |
 | len           | 0xA5  | Gets length of memory ubyte and stores in RM. | startAddr (uint), char (ubyte)                    |
 | strnum        | 0xA6  | Gets number from string and stores in RM.     | startAddr (uint), length (uint)                   |
-| numstr        | 0xA7  | Store number in memory as string.             | startAddr (uint), length (uint), value (uint)     |
+| numstr        | 0xA7  | Stores number in memory as string.            | startAddr (uint), length (uint), value (uint)     |
 | fopen         | 0xB0  | Opens file at directory string.               | startAddr (uint), length (uint)                   |
 | fclose        | 0xB1  | Closes currently open file.                   |                                                   |
 | fwrite        | 0xB2  | Writes memory into file at position.          | startAddr (uint), length (uint)                   |
@@ -44,6 +44,13 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | fread         | 0xB5  | Reads file into memory at position.           | startAddr (uint), length (uint)                   |
 | freadr        | 0xB6  | Reads file into memory in range.              | startAddr (uint), length (uint), fileAddr (uint)  |
 | fsize         | 0xB7  | Gets size of file and stores in RM.           |                                                   |
+| fdel          | 0xB8  | Closes and deletes open file.                 |                                                   |
+| fmd           | 0xB9  | Creates directory with name.                  | startAddr (uint), length (uint)                   |
+| frd           | 0xBA  | Deletes directory with name.                  | startAddr (uint), length (uint)                   |
+| fstart        | 0xBB  | Opens directory for listing.                  | startAddr (uint), length (uint)                   |
+| fnext         | 0xBC  | Gets next file in directory and stores name.  | nameAddr (uint)                                   |
+| fex           | 0xBD  | Checks if open file exists and stores in RM.  |                                                   |
+| fdir          | 0xBE  | Checks if next file is directory into RM.     |                                                   |
 | gpos          | 0xC0  | Sets GX and GY registers to values.           | xValue (uint), yValue (uint)                      |
 | gsize         | 0xC1  | Sets GW and GH registers to values.           | wValue (uint), hValue (uint)                      |
 | ginit         | 0xC2  | Sets drawing area.                            |                                                   |
@@ -59,7 +66,7 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | gasc          | 0xCC  | Draws output of ubyte in ASCII.               | colour (uint), startAddr (uint), length (uint)    |
 | gbmp          | 0xCD  | Draws bitmap by string.                       | startAddr (uint), length (uint)                   |
 | gtouch        | 0xCE  | Gets touch and stores in GX, GY and RM.       | waitForPress (bool)                               |
-| pause         | 0xD0  | Pause for a specified period of milliseconds. | milliseconds (uint)                               |
+| sleep         | 0xD0  | Sleep for a specified period of milliseconds. | milliseconds (uint)                               |
 | gyear         | 0xD1  | Gets the current year and stores in RM.       |                                                   |
 | gmonth        | 0xD2  | Gets the current month and stores in RM.      |                                                   |
 | gdate         | 0xD3  | Gets the current month date and stores in RM. |                                                   |
