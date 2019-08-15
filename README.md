@@ -66,7 +66,7 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | gasc          | 0xCC  | Draws output of ubyte in ASCII.               | colour (uint), startAddr (uint), length (uint)    |
 | gbmp          | 0xCD  | Draws bitmap by string.                       | startAddr (uint), length (uint)                   |
 | gtouch        | 0xCE  | Gets touch and stores in GX, GY and RM.       | waitForPress (bool)                               |
-| sleep         | 0xD0  | Sleep for a specified period of milliseconds. | milliseconds (uint)                               |
+| sleep         | 0xD0  | Sleeps for a period of milliseconds.          | milliseconds (uint)                               |
 | gyear         | 0xD1  | Gets the current year and stores in RM.       |                                                   |
 | gmonth        | 0xD2  | Gets the current month and stores in RM.      |                                                   |
 | gdate         | 0xD3  | Gets the current month date and stores in RM. |                                                   |
