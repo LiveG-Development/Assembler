@@ -11,9 +11,11 @@ infile = input("File in? ")
 outfile = input("File out? ")
 file = open(infile, "r")
 code = file.read()
+
 file.close()
 
 sequence = code.split("\n")
+definitions = {}
 assembled = [0] * 6144
 position = 0
 
@@ -21,17 +23,36 @@ print("")
 
 for i in range(0, len(sequence)) :
     currentLine = sequence[i].strip()
-    currentLineSplit = currentLine.split(";")[0].replace("  ", "").split(" ")
+    currentLineSplit = currentLine.split(";")[0].replace("   ", "").replace("  ", "").split(" ")
 
     print(currentLine)
 
-    if currentLineSplit[0] == "#data":
+    for j in range(0, len(currentLineSplit)):
+        if len(currentLineSplit[j]) > 1 and currentLineSplit[j][0] == ".":
+            # Data from definition
+
+            if currentLineSplit[j][1:] in definitions:
+                currentLineSplit[j] = definitions[currentLineSplit[j][1:]]
+            else:
+                print("    Definition does not exist on line " + str(i + 1) + ", continuing")
+
+    if currentLineSplit[0] == "#define":
+        print("    definition")
+
+        original = currentLineSplit[1]
+        replacement = " ".join(currentLineSplit[2:])
+
+        print("        original: " + original)
+        print("        replacement: " + replacement)
+
+        definitions[original] = replacement
+    elif currentLineSplit[0] == "#data":
         print("    data")
 
         startingAddress = int(currentLineSplit[1], 16)
 
         print("        address: " + hex(startingAddress)[2:].zfill(2))
-
+        
         if currentLineSplit[2][0] == "\"":
             # string
 

@@ -16,9 +16,22 @@ unsigned int position = 0;
 
 for (unsigned int i = 0; i < sequence.length; i++) {
     char* currentLine = sequence[i].trim();
-    char* currentLineSplit = currentLine.split(";")[0].replace("  ", "").split(" ");
+    char* currentLineSplit = currentLine.split(";")[0].replace("   ", "").replace("  ", "").split(" ");
 
-    if (currentLineSplit[0] == "#data") {
+    for (unsigned int j = 0; j < currentLineSplit.length; j++) {
+        if (currentLineSplit[j].length > 1 && currentLineSplit[j][0] == ".") {
+            if (currentLineSplit[j][0].hasKey(currentLineSplit[j][1:])) {
+                currentLineSplit[j] = definitions[currentLineSplit[j].subarray(1)];
+            }
+        }
+    }
+
+    if (currentLineSplit[0] == "#define") {
+        char* original = currentLineSplit[1];
+        char* replacement = currentLineSplit.subarray(2).join(" ");
+
+        definitions[original] = replacement;
+    } else if (currentLineSplit[0] == "#data") {
         unsigned int startingAddress = integer(currentLineSplit[1], 16);
 
         if (currentLineSplit[2][0] == "\"") {

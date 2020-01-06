@@ -366,7 +366,7 @@ while running:
                     if nextChar:
                         memory[parameters[0] + i] = ord(nextChar)
                     else:
-                        parameters[3] = 4
+                        registers[3] = 4
             else:
                 registers[3] = 5
 
