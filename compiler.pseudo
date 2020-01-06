@@ -17,9 +17,15 @@ for (unsigned int i = 0; i < sequence.length; i++) {
     char* currentLineSplit = currentLine.split(";")[0].replace("   ", "").replace("  ", "").split(" ");
 
     for (unsigned int j = 0; j < currentLineSplit.length; j++) {
-        if (currentLineSplit[j].length > 1 && currentLineSplit[j][0] == ".") {
-            if (currentLineSplit[j][0].hasKey(currentLineSplit[j][1:])) {
-                currentLineSplit[j] = definitions[currentLineSplit[j].subarray(1)];
+        if (currentLineSplit[j].length > 1 && (currentLineSplit[j][0] == "." || (currentLineSplit[j] == "@" && currentLineSplit[j][1] == ".")) {
+            if (currentLineSplit[j][1].length > 0 && currentLineSplit[j][0] == "@") {
+                if (currentLineSplit[j][0].hasKey(currentLineSplit[j].substring(2))) {
+                    currentLineSplit[j] = "@" + definitions[currentLineSplit[j].substring(2)];
+                }
+            } else if (currentLineSplit[j][1].length > 0) {
+                if (currentLineSplit[j][0].hasKey(currentLineSplit[j].substring(1))) {
+                    currentLineSplit[j] = definitions[currentLineSplit[j].substring(1)];
+                }
             }
         }
     }

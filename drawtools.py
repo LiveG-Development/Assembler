@@ -188,11 +188,11 @@ def gcircle(x, y, w, colour, borderSize):
 
 def gchar(char, x, y, h, colour):
     if display != None:
-        if not (char >= 32 and char <= 127):
-            char = ord("?")
+        if not (ord(char) >= 32 and ord(char) <= 127):
+            char = "?"
         
         for i in range(0, 8):
-            glyph = font[char - 0x20][i]
+            glyph = font[ord(char) - 0x20][i]
 
             for j in range(0, 8):
                 if (glyph >> j) & 0x01:

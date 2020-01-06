@@ -28,13 +28,19 @@ for i in range(0, len(sequence)) :
     print(currentLine)
 
     for j in range(0, len(currentLineSplit)):
-        if len(currentLineSplit[j]) > 1 and currentLineSplit[j][0] == ".":
+        if len(currentLineSplit[j]) > 1 and (currentLineSplit[j][0] == "." or (currentLineSplit[j][0] == "@" and currentLineSplit[j][1] == ".")):
             # Data from definition
 
-            if currentLineSplit[j][1:] in definitions:
-                currentLineSplit[j] = definitions[currentLineSplit[j][1:]]
-            else:
-                print("    Definition does not exist on line " + str(i + 1) + ", continuing")
+            if len(currentLineSplit[j][1]) > 0 and currentLineSplit[j][0] == "@":
+                if currentLineSplit[j][2:] in definitions:
+                    currentLineSplit[j] = "@" + definitions[currentLineSplit[j][2:]]
+                else:
+                    print("    Definition does not exist on line " + str(i + 1) + ", continuing")
+            elif len(currentLineSplit[j][1]) > 0:
+                if currentLineSplit[j][1:] in definitions:
+                    currentLineSplit[j] = definitions[currentLineSplit[j][1:]]
+                else:
+                    print("    Definition does not exist on line " + str(i + 1) + ", continuing")
 
     if currentLineSplit[0] == "#define":
         print("    definition")

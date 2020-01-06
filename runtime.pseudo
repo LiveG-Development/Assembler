@@ -83,7 +83,7 @@ while (running) {
             if (parameters[1] == 0) {
                 registers[3] = 1;
             } else {
-                registers[2] = integer(parameters[0] / parameters[1]);
+                registers[2] = int(parameters[0] / parameters[1]);
 
                 registers[3] = 0;
             }
@@ -489,45 +489,45 @@ while (running) {
         case 0xC2:
             // ginit
 
-            registers[3] = integer(drawtools.ginit(registers[10], registers[11])) * 6;
+            registers[3] = int(drawtools.ginit(registers[10], registers[11])) * 6;
         case 0xC3:
             // gfill
 
-            registers[3] = integer(drawtools.gfill(parameters[0])) * 6;
+            registers[3] = int(drawtools.gfill(parameters[0])) * 6;
         case 0xC4:
             // gpixel
 
-            registers[3] = integer(drawtools.gpixel(registers[8], registers[9], parameters[0])) * 6;
+            registers[3] = int(drawtools.gpixel(registers[8], registers[9], parameters[0])) * 6;
         case 0xC5:
             // gline
 
-            registers[3] = integer(drawtools.gline(registers[8], registers[9], registers[10], registers[11], parameters[0])) * 6;
+            registers[3] = int(drawtools.gline(registers[8], registers[9], registers[10], registers[11], parameters[0])) * 6;
         case 0xC6:
             // gfline
 
-            registers[3] = integer(drawtools.gfline(registers[8], registers[9], registers[10], registers[11], parameters[1], parameters[0])) * 6;
+            registers[3] = int(drawtools.gfline(registers[8], registers[9], registers[10], registers[11], parameters[1], parameters[0])) * 6;
         case 0xC7:
             // grect
 
             if (parameters[1] > 0) {
-                registers[3] = integer(drawtools.grect(registers[8], registers[9], registers[10], registers[11], parameters[0], 0)) * 6;
+                registers[3] = int(drawtools.grect(registers[8], registers[9], registers[10], registers[11], parameters[0], 0)) * 6;
             } else {
-                registers[3] = integer(drawtools.grect(registers[8], registers[9], registers[10], registers[11], parameters[0], 1)) * 6;
+                registers[3] = int(drawtools.grect(registers[8], registers[9], registers[10], registers[11], parameters[0], 1)) * 6;
             }
         case 0xC8:
             // gcircle
 
             if (parameters[1] > 0) {
-                registers[3] = integer(drawtools.gcircle(registers[8], registers[9], registers[10], parameters[0], 0)) * 6;
+                registers[3] = int(drawtools.gcircle(registers[8], registers[9], registers[10], parameters[0], 0)) * 6;
             } else {
-                registers[3] = integer(drawtools.gcircle(registers[8], registers[9], registers[10], parameters[0], 1)) * 6;
+                registers[3] = int(drawtools.gcircle(registers[8], registers[9], registers[10], parameters[0], 1)) * 6;
             }
         case 0xC9:
             // gbin
 
             for (unsigned int i = 0; i < parameters[2]; i++) {
                 for (unsigned int j = 0; j < binary(memory[parameters[2] + i]).length; j++) {
-                    registers[3] = integer(drawtools.gchar(binary(memory[parameters[1] + i])[j], registers[8] + (j * registers[11] * 4), registers[9], registers[11], parameters[0])) * 6;
+                    registers[3] = int(drawtools.gchar(binary(memory[parameters[1] + i])[j], registers[8] + (j * registers[11] * 4), registers[9], registers[11], parameters[0])) * 6;
                 }
             }
         case 0xCA:
@@ -540,25 +540,25 @@ while (running) {
             }
 
             for (unsigned int i = 0; i < string(result).length; i++) {
-                registers[3] = integer(drawtools.gchar(string(result)[i], registers[8] + (i * registers[11] * 4), registers[9], registers[11], parameters[0])) * 6;
+                registers[3] = int(drawtools.gchar(string(result)[i], registers[8] + (i * registers[11] * 4), registers[9], registers[11], parameters[0])) * 6;
             }
         case 0xCB:
             // ghex
 
             for (unsigned int i = 0; i < parameters[2]; i++) {
                 if (hexadecimal(memory[parameters[1] + i]).length < 2) {
-                    registers[3] = integer(drawtools.gchar("0", registers[8], registers[9], registers[11], parameters[2])) * 6;
-                    registers[3] = integer(drawtools.gchar(hexadecimal(memory[parameters[1] + i]), registers[8] + (registers[11] * 4), registers[9], registers[11], parameters[0])) * 6;
+                    registers[3] = int(drawtools.gchar("0", registers[8] + ((i * 2) * registers[11] * 6), registers[9], registers[11], parameters[2])) * 6;
+                    registers[3] = int(drawtools.gchar(hexadecimal(memory[parameters[1] + i]), registers[8] + (((i * 2) + 1) * registers[11] * 6), registers[9], registers[11], parameters[0])) * 6;
                 } else {
-                    registers[3] = integer(drawtools.gchar(hexadecimal(memory[parameters[1] + i])[0], registers[8], registers[9], registers[11], parameters[2])) * 6;
-                    registers[3] = integer(drawtools.gchar(hexadecimal(memory[parameters[1] + i])[1], registers[8] + (registers[11] * 4), registers[9], registers[11], parameters[0])) * 6;
+                    registers[3] = int(drawtools.gchar(hexadecimal(memory[parameters[1] + i])[0], registers[8] + ((i * 2) * registers[11] * 6), registers[9], registers[11], parameters[2])) * 6;
+                    registers[3] = int(drawtools.gchar(hexadecimal(memory[parameters[1] + i])[1], registers[8] + (((i * 2) + 1) * registers[11] * 6), registers[9], registers[11], parameters[0])) * 6;
                 }
             }
         case 0xCC:
             // gasc
 
             for (unsigned int i = 0; i < parameters[2]; i++) {
-                registers[3] = integer(drawtools.gchar(ascii(memory[parameters[1] + i]), registers[8] + (i * registers[11] * 4), registers[9], registers[11], parameters[0])) * 6;
+                registers[3] = int(drawtools.gchar(ascii(memory[parameters[1] + i]), registers[8] + (i * registers[11] * 4), registers[9], registers[11], parameters[0])) * 6;
             }
         case 0xCD:
             // gbmp
@@ -569,7 +569,7 @@ while (running) {
                 fileDirectory += ascii(memory[parameters[0] + i]);
             }
 
-            registers[3] = integer(drawtools.gbmp(registers[8], registers[9], fileDirectory)) * 6;
+            registers[3] = int(drawtools.gbmp(registers[8], registers[9], fileDirectory)) * 6;
         case 0xCE:
             // gtouch
 
