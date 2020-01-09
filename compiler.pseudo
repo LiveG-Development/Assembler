@@ -204,12 +204,12 @@ for (unsigned int i = 0; i < sequence.length; i++) {
                         assembled[position] = 0xFD;
                         assembled[position + 1] = i;
                         
-                        if (params[i].length == 2) {
+                        if (params[i].trim().length == 2) {
                             assembled[position + 2] = 0;
-                            assembled[position + 3] = integer(params[i], 16);
+                            assembled[position + 3] = integer(params[i].trim(), 16);
                         } else {
-                            assembled[position + 2] = integer(params[i].substring(0, 2), 16);
-                            assembled[position + 3] = integer(params[i].substring(2, 4), 16);
+                            assembled[position + 2] = integer(params[i].trim().substring(0, 2), 16);
+                            assembled[position + 3] = integer(params[i].trim().substring(2, 4), 16);
                         }
                     }
                 }

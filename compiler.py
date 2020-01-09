@@ -230,12 +230,12 @@ for i in range(0, len(sequence)) :
                         assembled[position] = 0xFD
                         assembled[position + 1] = i
                         
-                        if len(params[i]) == 2:
+                        if len(params[i].strip()) == 2:
                             assembled[position + 2] = 0
-                            assembled[position + 3] = int(params[i], 16)
+                            assembled[position + 3] = int(params[i].strip(), 16)
                         else:
-                            assembled[position + 2] = int(params[i][0:2], 16)
-                            assembled[position + 3] = int(params[i][2:4], 16)
+                            assembled[position + 2] = int(params[i].strip()[0:2], 16)
+                            assembled[position + 3] = int(params[i].strip()[2:4], 16)
                     
                     position += 4
         
