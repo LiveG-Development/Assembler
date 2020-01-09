@@ -28,6 +28,12 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 | cgp           | 0x13  | Clears all general-purpose registers.         |                                                   |
 | dwrite        | 0x14  | Writes uint to memory at address.             | value (uint), addr (uint)                         |
 | dread         | 0x15  | Reads uint memory at address to RM register.  | addr (uint)                                       |
+| bsl           | 0x16  | Bit-shifts value left by amount to AR.        | value (uint), amount (uint)                       |
+| bsr           | 0x17  | Bit-shifts value right by amount to AR.       | value (uint), amount (uint)                       |
+| and           | 0x18  | ANDs two parameters and stores in AR.         | firstVal (uint), secondVal (uint)                 |
+| or            | 0x19  | ORs two parameters and stores in AR.          | firstVal (uint), secondVal (uint)                 |
+| xor           | 0x1A  | XORs two parameters and stores in AR.         | firstVal (uint), secondVal (uint)                 |
+| onec          | 0x1B  | Performs one's complement (inversion) to AR.  | value (uint)                                      |
 | outbin        | 0xA0  | Writes output of ubyte to TTY in binary.      | startAddr (uint), length (uint)                   |
 | outdec        | 0xA1  | Writes output of ubyte in decimal.            | startAddr (uint), length (uint)                   |
 | outhex        | 0xA2  | Writes output of ubyte in hexadecimal.        | startAddr (uint), length (uint)                   |

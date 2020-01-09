@@ -196,6 +196,30 @@ while running:
         # dread
 
         registers[1] = (memory[parameters[0]] * 256) + memory[parameters[0] + 1]
+    elif instruction == 0x16:
+        # bsl
+
+        registers[2] = (parameters[0] << parameters[1]) & 0xFFFF
+    elif instruction == 0x17:
+        # bsr
+
+        registers[2] = (parameters[0] >> parameters[1]) & 0xFFFF
+    elif instruction == 0x18:
+        # and
+
+        registers[2] = parameters[0] & parameters[1]
+    elif instruction == 0x19:
+        # or
+
+        registers[2] = parameters[0] | parameters[1]
+    elif instruction == 0x1A:
+        # xor
+
+        registers[2] = parameters[0] ^ parameters[1]
+    elif instruction == 0x1B:
+        # onec
+
+        registers[2] = (~parameters[0]) & 0xFFFF
     elif instruction == 0xA0:
         # outbin
 
