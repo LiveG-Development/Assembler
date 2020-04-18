@@ -3,6 +3,10 @@ Compiler and runtime used to assemble LiveG Assembly (*.gas, *.gbn) files.
 
 This repository is licensed by the [LiveG Open-Source Licence](https://github.com/LiveG-Development/Assembler/blob/master/LICENCE.md).
 
+## Prerequisites
+In order to use (and contribute to) LiveG Assembler, you'll need the following installed:
+* [Python 3](https://www.python.org/downloads)
+
 ## Add to PATH in Bash (for gDesk OS, Linux and macOS)
 If you would like to use LiveG Assembler wherever you are in your Bash terminal, you should add LiveG Assembler to your PATH:
 
