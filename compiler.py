@@ -14,14 +14,13 @@ import libs.strings.en_GB
 
 _ = lang._
 
-def compile(infile, outfile, size = 6144):
+def compile(infile, outfile, size = 6144, definitions = {}):
     file = open(infile, "r")
     code = file.read()
 
     file.close()
 
     sequence = code.split("\n")
-    definitions = {}
     assembled = [0] * size
     position = 0
 
@@ -267,4 +266,7 @@ def compile(infile, outfile, size = 6144):
     file.write(bytearray(assembled))
     file.close()
 
-    return [len(assembled), size, (len(assembled) / size) * 100]
+    return {
+        "definitions": definitions,
+        "stats": [len(assembled), size, (len(assembled) / size) * 100]
+    }

@@ -146,49 +146,56 @@ else:
             shutil.rmtree("build")
         except:
             pass
+    
+        definitions = {}
 
-        for root, subdirs, files in os.walk("."):
-            neededPath = os.path.join("build", root)
+        for compilePass in range(0, 2):
+            if compilePass == 0:
+                output.action(_("buildLibraries"))
+            else:
+                output.action(_("buildFiles"))
 
-            # Skip the `build` directory
-            if root.startswith(os.path.join(".", "build", "")):
-                continue
+            for root, subdirs, files in os.walk(".", topdown = True):
+                neededPath = os.path.join("build", root)
 
-            # Skip the `.git` directory so that git objects don't get copied
-            if root.startswith(os.path.join(".", ".git", "")):
-                continue
+                # Skip the `build` directory
+                if root.startswith(os.path.join(".", "build", "")):
+                    continue
+
+                # Skip the `.git` directory so that git objects don't get copied
+                if root.startswith(os.path.join(".", ".git", "")):
+                    continue
+                    
+                if not os.path.exists(neededPath):
+                    os.makedirs(neededPath)
                 
-            if not os.path.exists(neededPath):
-                os.makedirs(neededPath)
-            
-            for i in range(0, len(files)):
-                infile = os.path.join(root, files[i])
-                outfile = os.path.join(neededPath, files[i])
+                for i in range(0, len(files)):
+                    infile = os.path.join(root, files[i])
+                    outfile = os.path.join(neededPath, files[i])
 
-                if files[i].endswith(".gas"):
-                    output.action(_("compileFile", [os.path.join(root, files[i])]))
+                    if files[i].endswith(".gas") and compilePass != 0:
+                        output.action(_("compileFile", [os.path.join(root, files[i])]))
 
-                    compiler.compile(infile, ".".join(outfile.split(".")[:-1]) + ".gbn", size)
+                        definitions = compiler.compile(infile, ".".join(outfile.split(".")[:-1]) + ".gbn", size, definitions)["definitions"]
 
-                    filesCompiled += 1
-                elif files[i].endswith(".gal"):
-                    output.action(_("compileLibrary", [os.path.join(root, files[i])]))
+                        filesCompiled += 1
+                    elif files[i].endswith(".gal") and compilePass != 1:
+                        output.action(_("compileLibrary", [os.path.join(root, files[i])]))
 
-                    compiler.compile(infile, ".".join(outfile.split(".")[:-1]) + ".gbl", size)
+                        definitions = compiler.compile(infile, ".".join(outfile.split(".")[:-1]) + ".gbl", size, definitions)["definitions"]
+                        filesCompiled += 1
+                        librariesCompiled += 1
+                    elif compilePass != 0:
+                        output.action(_("copyFile", [os.path.join(root, files[i])]))
 
-                    filesCompiled += 1
-                    librariesCompiled += 1
-                else:
-                    output.action(_("copyFile", [os.path.join(root, files[i])]))
+                        infileOpen = open(infile, "rb")
+                        infileData = infileOpen.read()
+                        outfileOpen = open(outfile, "wb")
 
-                    infileOpen = open(infile, "rb")
-                    infileData = infileOpen.read()
-                    outfileOpen = open(outfile, "wb")
+                        outfileOpen.write(infileData)
 
-                    outfileOpen.write(infileData)
-
-                    infileOpen.close()
-                    outfileOpen.close()
+                        infileOpen.close()
+                        outfileOpen.close()
             
         output.returns(_("compiledFiles", [filesCompiled, librariesCompiled]))
     elif args[1] == "run":

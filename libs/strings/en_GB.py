@@ -60,6 +60,8 @@ List of commands used in LiveG Assembler:
     "invalidInstruction": "Invalid instruction on line {0}.",
     "programUsage": "Compiled; program uses {0}/{1} bytes, {2}% of memory.",
     "cleanUpBuildDir": "Cleaning up `build` directory...",
+    "buildLibraries": "Building libraries...",
+    "buildFiles": "Building files...",
     "compileFile": "Compiling {0}...",
     "compileLibrary": "Compiling library {0}...",
     "copyFile": "Copying {0}...",
