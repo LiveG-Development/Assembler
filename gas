@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# LiveG Assembler
+# 
+# Copyright (C) LiveG. All Rights Reserved.
+# Copying is not a victimless crime. Anyone caught copying LiveG software may
+# face sanctions.
+# 
+# https://liveg.tech
+# Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+python3 "$DIR/gas.py" "${@:1}"

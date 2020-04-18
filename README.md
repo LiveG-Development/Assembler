@@ -3,6 +3,105 @@ Compiler and runtime used to assemble LiveG Assembly (*.gas, *.gbn) files.
 
 This repository is licensed by the [LiveG Open-Source Licence](https://github.com/LiveG-Development/Assembler/blob/master/LICENCE.md).
 
+## Add to PATH in Bash (for gDesk OS, Linux and macOS)
+If you would like to use LiveG Assembler wherever you are in your Bash terminal, you should add LiveG Assembler to your PATH:
+
+1. Open up the file at `~/.bashrc` in your favourite text editor.
+2. Right at the very bottom, add:
+    ```bash
+    export PATH="$PATH:/path/to/gas"
+    ```
+    Where of course `/path/to/gas` is the directory path which LiveG Assembler is contained in (and not the actual `gas` file).
+3. Logout and in again (or just open up a new terminal session), and use LiveG Assembler by just typing `gas`!
+
+## Add to PATH in Command Prompt (for Windows)
+If you would like to use LiveG Assembler wherever you are in Command Prompt, you should add LiveG Assembler to your PATH:
+
+1. Type in Command Prompt:
+    ```batch
+    setx PATH "%PATH%;C:\path\to\gas"
+    ```
+    Where of course `\path\to\gas` is the directory path which LiveG Assembler is contained in (and not the actual `gas.bat` file).
+2. Use LiveG Assembler by just typing `gas`!
+
+> **Note:** You may need to edit your registry at `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment` with the `Path` value in the same way to overcome the 1,024 character limit. If you don't get a warning about this character limit, you won't have to do this! You may need to restart your computer for this to take effect.
+
+> **Note:** It may be required for you to enable console colours so that LiveG Assembler can be displayed nicely. To do this, edit your registry at `HKEY_CURRENT_USER\Console` with the `VirtualTerminalLevel` (you may need to create the value as a `DWORD`) set to `1`. You may need to restart your computer (or just open a new Command Prompt session) for this to take effect.
+
+## Available commands and features
+Below is a list of commands that you can use in LiveG Assembler, and the features that they bring.
+
+### `--hide` (argument)
+Temporarily hide the header that appears when a LiveG Assembler command is run. This can be automated by setting the `hide` variable to `true`.
+
+Aliases: `-h`
+
+### `help`
+```
+help        Display this help screen.
+```
+
+Display the help screen that is a simpler equivalent to this section.
+
+Aliases: `--help`, `/?`
+
+### `var`
+```
+var         Read, set or delete variables.
+            <name>              Read data contained in variable.
+            <name> <data>       Write data to variable.
+            <name> --delete     Delete variable.
+```
+
+Read, set or delete variables stored for usage with LiveG Assembler. Please see [List of LiveG Assembler variables](https://github.com/LiveG-Development/LiveG Assembler#list-of-LiveG Assembler-variables) for a list of variables and their descriptions.
+
+Variables are stored as plain files in `~/.gasset`, along with the `cache` folder.
+
+### `compile`
+```
+compile     Compile a single file into a .gbn file.
+            <infile>            Compile <infile> into a .gbn file with the same name (without original file extension).
+            <infile> <outfile>  Compile <infile> into <outfile>.
+```
+
+Compile a single file into a binary .gbn file that can be run by using the `run` command. This file must be a file written in LiveG Assembly.
+
+If `<outfile>` is omitted, the name of `<infile>` will be used, with the file extension as .gbn instead of .gas.
+
+### `build`
+```
+build       Compile the current directory into the `build` subdirectory.
+```
+
+Compile all .gas and .gal files in the current directory (except those in the `build` subdirectory) to the `build` subdirectory and copy any non-.gas and non-.gal files into the `build` subdirectory too.
+
+The `run` command must have the `--built` argument after it, or otherwise any filesystem paths referenced in LiveG Assembly will be relative to the current directory instead of the `build` subdirectory.
+
+### `run`
+```
+run         Run the specified file in an emulator.
+            <file>              Run compiled file.
+            <file> --built      Run compiled file from within the `build` subdirectory.
+            <file> --debug      Run compiled file in debug mode.
+            <file> --built --debug
+                                Run compiled file from within the `build` subdirectory in debug mode.
+```
+
+Run the specified compiled file in an emulator. The compiled file must follow the format of the LiveG Assembler instruction set.
+
+Use the `--built` argument to allow filesystem paths referenced in LiveG Assembly to be relative to the `build` subdirectory instead of the current directory. With this, the `<file>` location is relative to the `build` subdirectory too.
+
+Use the `--debug` argument to run in debug mode, allowing for easier debugging of programs written in LiveG Assembly.
+
+## List of LiveG Assembler variables
+Here's a list of LiveG Assembler variables that you can use with the [`var` command](https://github.com/LiveG-Development/Assembler#var):
+
+| Name       | Description                                                                                              |
+|------------|----------------------------------------------------------------------------------------------------------|
+| `size`     | Allow compiled files to be allocated up to the number of bytes specified.                                |
+| `hide`     | Hide the LiveG Assembler notice every time you invoke LiveG Assembler (must be set to `true` to enable). |
+| `locale`   | Set the locale name (for example, `en_GB`).                                                              |
+
 ## Assembler instructions
 | Instruction   | Code  | Description                                   | Parameters                                        |
 |---------------|-------|-----------------------------------------------|---------------------------------------------------|
