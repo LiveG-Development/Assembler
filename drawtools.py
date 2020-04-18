@@ -206,7 +206,7 @@ def gbmp(x, y, dir):
     if display != None:
         image = pygame.image.load(dir)
 
-        display.blit(image, (0, 0))
+        display.blit(image, (x, y))
         pygame.display.update()
 
         return True
