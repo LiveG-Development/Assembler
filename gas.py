@@ -176,7 +176,7 @@ else:
                     if files[i].endswith(".gas") and compilePass != 0:
                         output.action(_("compileFile", [os.path.join(root, files[i])]))
 
-                        definitions = compiler.compile(infile, ".".join(outfile.split(".")[:-1]) + ".gbn", size, definitions)["definitions"]
+                        compiler.compile(infile, ".".join(outfile.split(".")[:-1]) + ".gbn", size, definitions)
 
                         filesCompiled += 1
                     elif files[i].endswith(".gal") and compilePass != 1:
