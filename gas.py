@@ -131,7 +131,7 @@ else:
             else:
                 outfile = "".join(infile.split("/")[-1].split(".")[:-1]) + ".gbn"
 
-            output.returns(_("programUsage", compiler.compile(infile, outfile, size)))
+            output.returns(_("programUsage", compiler.compile(infile, outfile, size)["stats"]))
         else:
             output.error(_("invalidCommandStructure"))
             sys.exit(1)

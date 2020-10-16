@@ -7,6 +7,8 @@
 # https://liveg.tech
 # Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 
+import sys
+
 import libs.output as output
 import libs.lang as lang
 
@@ -26,7 +28,7 @@ def compile(infile, outfile, size = 6144, definitions = {}):
 
     print("")
 
-    for i in range(0, len(sequence)) :
+    for i in range(0, len(sequence)):
         currentLine = sequence[i].strip()
         currentLineSplit = currentLine.split(";")[0].replace("   ", "").replace("  ", "").split(" ")
 
@@ -256,8 +258,7 @@ def compile(infile, outfile, size = 6144, definitions = {}):
                 position += 1
             else:
                 output.error(_("invalidInstruction", [str(i + 1)]))
-
-                return
+                sys.exit(1)
 
     while assembled[len(assembled) - 1] == 0:
         assembled.pop()
